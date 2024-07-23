@@ -51,7 +51,8 @@ dependencies {
 
     implementation("org.jetbrains.exposed:exposed:0.17.13")
     implementation("com.zaxxer:HikariCP:2.7.8")
-    implementation("org.flywaydb:flyway-core:5.2.4")
+    // Version "5.2.4" has error "column pg_proc.proisagg does not exist"
+    implementation("org.flywaydb:flyway-core:6.0.8")
 
     implementation("com.squareup.retrofit2:retrofit:2.3.0")
     implementation("com.squareup.retrofit2:converter-jackson:2.3.0")
