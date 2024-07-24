@@ -1,6 +1,6 @@
 package mobi.sevenwinds.app.author
 
-import com.papsign.ktor.openapigen.annotations.type.number.integer.min.Min
+import com.papsign.ktor.openapigen.annotations.type.string.length.Length
 import com.papsign.ktor.openapigen.route.info
 import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
 import com.papsign.ktor.openapigen.route.path.normal.post
@@ -16,7 +16,7 @@ fun NormalOpenAPIRoute.author() {
 }
 
 data class AuthorAddRequest(
-    @Min(1) val fio: String
+    @Length(min = 1, max = 255) val fio: String
 )
 
 data class AuthorResponse(
