@@ -17,6 +17,10 @@ class AuthorEntity(id: EntityID<Int>) : IntEntity(id) {
     var dateCreate by AuthorTable.dateCreate
 
     fun toResponse(): AuthorResponse {
-        return AuthorResponse(fio, dateCreate.toString("yyyy-MM-dd HH:mm:ssZ"))
+        return AuthorResponse(
+            id.value,
+            fio,
+            dateCreate.toString("yyyy-MM-dd HH:mm:ssZ")
+        )
     }
 }

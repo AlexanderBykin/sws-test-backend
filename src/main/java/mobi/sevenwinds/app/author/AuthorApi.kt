@@ -20,6 +20,7 @@ data class AuthorAddRequest(
 )
 
 data class AuthorResponse(
+    val id: Int,
     val fio: String,
     val dateCreate: String
 )
