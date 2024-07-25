@@ -126,6 +126,58 @@ class BudgetApiKtTest : ServerTest() {
     }
 
     @Test
+    fun testAddBudgetWithExistAuthorAndSearchSingleBudgetAuthor() {
+        val author1 = addAuthorRecord(AuthorAddRequest(fio = "qwe"))
+        val author2 = addAuthorRecord(AuthorAddRequest(fio = "asd"))
+        val author3 = addAuthorRecord(AuthorAddRequest(fio = "zxc"))
+        val budget1 = addBudgetRecord(BudgetAddRequest(2024, 7, 100, BudgetType.Приход, authorId = author1.id))
+        val budget2 = addBudgetRecord(BudgetAddRequest(2024, 7, 200, BudgetType.Приход, authorId = author2.id))
+        val budget3 = addBudgetRecord(BudgetAddRequest(2024, 7, 300, BudgetType.Приход, authorId = author3.id))
+        RestAssured.given()
+            .get("/budget/year/2024/stats?limit=100&offset=0&authorName=QWE")
+            .toResponse<BudgetYearStatsResponse>().let { response ->
+                println(response.items)
+
+                Assert.assertEquals(1, response.total)
+                Assert.assertEquals(1, response.items.size)
+
+                Assert.assertEquals(budget1.amount, response.items[0].amount)
+                Assert.assertEquals(budget1.author?.id, author1.id)
+                Assert.assertEquals(budget1.author?.id, response.items[0].author?.id)
+            }
+    }
+
+    @Test
+    fun testAddBudgetWithExistAuthorAndSearchManyBudgetAuthor() {
+        val author1 = addAuthorRecord(AuthorAddRequest(fio = "qwe123"))
+        val author2 = addAuthorRecord(AuthorAddRequest(fio = "asd123"))
+        val author3 = addAuthorRecord(AuthorAddRequest(fio = "zxc123"))
+        val budget1 = addBudgetRecord(BudgetAddRequest(2024, 7, 100, BudgetType.Приход, authorId = author1.id))
+        val budget2 = addBudgetRecord(BudgetAddRequest(2024, 7, 200, BudgetType.Приход, authorId = author2.id))
+        val budget3 = addBudgetRecord(BudgetAddRequest(2024, 7, 300, BudgetType.Приход, authorId = author3.id))
+        RestAssured.given()
+            .get("/budget/year/2024/stats?limit=100&offset=0&authorName=123")
+            .toResponse<BudgetYearStatsResponse>().let { response ->
+                println(response.items)
+
+                Assert.assertEquals(3, response.total)
+                Assert.assertEquals(3, response.items.size)
+
+                Assert.assertEquals(budget3.amount, response.items[0].amount)
+                Assert.assertEquals(budget3.author?.id, author3.id)
+                Assert.assertEquals(budget3.author?.id, response.items[0].author?.id)
+
+                Assert.assertEquals(budget2.amount, response.items[1].amount)
+                Assert.assertEquals(budget2.author?.id, author2.id)
+                Assert.assertEquals(budget2.author?.id, response.items[1].author?.id)
+
+                Assert.assertEquals(budget1.amount, response.items[2].amount)
+                Assert.assertEquals(budget1.author?.id, author1.id)
+                Assert.assertEquals(budget1.author?.id, response.items[2].author?.id)
+            }
+    }
+
+    @Test
     fun testInvalidMonthValues() {
         RestAssured.given()
             .jsonBody(BudgetAddRequest(2020, -5, 5, BudgetType.Приход))
