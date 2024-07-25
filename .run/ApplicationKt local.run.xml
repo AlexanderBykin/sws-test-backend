@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ApplicationKt local" type="JetRunConfigurationType">
+    <envs>
+      <env name="JDBC_URL" value="jdbc:postgresql://localhost:5432/sws_dev_mem" />
+      <env name="DB_USER" value="postgres" />
+      <env name="DB_PASSWORD" value="ok" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="mobi.sevenwinds.ApplicationKt" />
+    <module name="test-budget.main" />
+    <shortenClasspath name="NONE" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
