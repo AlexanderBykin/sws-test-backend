@@ -7,7 +7,7 @@ import org.jetbrains.exposed.dao.IntIdTable
 
 object AuthorTable : IntIdTable("author") {
     val fio = varchar("fio", 255)
-    val dateCreate = datetime("dateCreate")
+    val dateCreate = datetime("date_create")
 }
 
 class AuthorEntity(id: EntityID<Int>) : IntEntity(id) {
@@ -17,6 +17,6 @@ class AuthorEntity(id: EntityID<Int>) : IntEntity(id) {
     var dateCreate by AuthorTable.dateCreate
 
     fun toResponse(): AuthorResponse {
-        return AuthorResponse(fio, dateCreate.toString("yyyy-MM-dd'T'HH:mm'Z'"))
+        return AuthorResponse(fio, dateCreate.toString("yyyy-MM-dd HH:mm:ssZ"))
     }
 }
